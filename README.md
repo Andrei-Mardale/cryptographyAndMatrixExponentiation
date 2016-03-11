@@ -1,4 +1,4 @@
-# nmHomework1
+#cryptographyAndMatrixExponentiation
 My first Numerical Methods homework
 
 An Octave implementation of various text encryption methods.
