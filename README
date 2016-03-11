@@ -1,0 +1,39 @@
+La punctul a am aplicat intocmai algoritmul descris. Am urmatoarele functii:
+
+- readText - citeste toate simbolurile din fisier intr-un vector
+- writeText - scrie toate simbolurile din vector intr-un fisier
+- readMatrix - citeste o matrice care respecta formatul de la a)
+- transformSN - transforma codul ascii in numerele utilizabile pt algoritmul de la a)
+- transformNS - transforma numerele in cod ascii (inversul functiei precedente)
+
+La punctul b folosesc algoritmul Gauss-Jordan modificat pentru modulo 29 pentru calcularea inversei:
+1) Determin toate inversele multplicative pentru elementele din modulo 29.
+2) Fac 1 in pozitia pivotului prin inmultire.
+3) Inmultesc linia-pivot cu inversul aditiv pt fiecare element de sub pivot => 0 sub pivot. => matrice superior triunghiulara
+4) Repet pasul 3 de jos in sus => [I A^-1] 
+
+Am mai creat functia euclid care implementeaza algoritmul lui Euclid extins pentru determinarea inversei multiplicative.
+In rest folosesc functiile de la a si aplic acelasi algoritm.
+
+La punctul ce folosesc o matrice de translatie. Structura am preluat-o de aici: 
+http://en.wikipedia.org/wiki/Translation_%28geometry%29#Matrix_representation
+
+Pentru modificarea cheii la trecerea pragului de 1000 de caractere nu fac decat sa modific la pasul x o parte din randurile matricii care corespund pozitiilor unde avem k+1. La urmatorul pas (x+1) modific intreaga matrice.
+
+La taskul 2 fac inversare prin metoda partitionarii asa cum este descrisa in laborator. Matricile pe care le aleg au dimensiuni apropiate ceea ce mareste considerabil viteza fata de cazul in care aleg pivotul de separare la unul din capetele diagonalei principale. Inmultirile sunt facute cu alg. Strassen. Conditia de iesire din recursivitate apare atunci cand matricea are dimensiuni mai mici de 16 x 16. In acest caz aplic Gauss-Jordan cu pivotare partiala pentru stabilitate numerica.
+
+La inmultirea cu strassen aplic 2 pasi:
+1) Chem functia multiply care face padding astfel incat cele 2 matrici sa fie patratice
+2) Aplic efectiv Strassen pana la cazul 16x16 unde ies din recursie si fac inmultirea obisnuita.
+
+EDIT1: Odata ce a aparut checker-ul am vazut ca pentru testul 10 depaseam timpul limita. Scriptul meu termina pe calculatorul meu in 30~35 de secunde fata de limita de 30.
+Astfel am modificat conditia de oprire la inmultirea Strassen de la 16 la 32. Timpul s-a imbunatatit, ajungand in intervalul 7-10 secunde.
+
+EDIT2: Din cate am inteles azi la curs (31/04/2015), conditia de oprire pentru inversarea prin partitionare ar trebuie sa fie cazul limita 1x1 cand matricile sunt defapt numere. Implementand astfel, timpii cresc foarte mult. Am preferat sa las tema in starea de la EDIT1. Totusi am create scripturile strassen2 si part_inv2 care sunt in concordanta cu cerintele de mai devreme.
+Tema testata cu functiile strassen si part_inv de la EDIT1 intra in timpi. Pe langa dorinta evidenta de a trece testele am preferat sa las inversarea de la EDIT1 pentru ca in practica va functiona mai bine decat daca s-ar opri la cazul 1x1. 
+Daca as iesi din recursie la 1x1 pot avea situatii cand nu poate fi aplicata aceasta metoda chiar daca matricea este defapt inversabila, de exemplu cand am 0 pe diagonala principala.
+ex: A = [0 2; 1 0] are inversa iA = [0 1; 0.5 0] Prin partitionare cu caz limita 1x1 as fi primit division by 0.
+Desi in testele de la tema nu se intalnesc astfel de cazuri prefer ca algoritmii implementati aici sa fie cat mai generali.
+
+
+
